@@ -1,0 +1,525 @@
+/* GLOBAL */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #2a1d09;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100vw;
+  max-width: 100vw;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body > * {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+/* NAVBAR */
+.header {
+  position: fixed;
+  width: 100vw;
+  top: 0;
+  background: rgba(15, 15, 17, 0.75);
+  backdrop-filter: blur(12px);
+  padding: 10px 0;
+  z-index: 1000;
+}
+
+.header-container {
+  max-width: 1300px;
+  margin: auto;
+  padding: 12px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #eca271, #bb44ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nav-links a {
+  color: #eee;
+  text-decoration: none;
+  margin-left: 40px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.nav-links a:hover {
+  color: #e3b68e;
+}
+
+/* HERO – Animated Gradient */
+.hero {
+  height: auto;
+  padding: 160px 40px 120px;
+  text-align: center;
+  color: #1a1a1a;
+  background: linear-gradient(-45deg, #ffe0c7, #ffd4f4, #e5d4ff, #c7e9ff, #ffcce5);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  border-radius: 0 0 80px 80px;
+  margin-top: 70px;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hero h1 {
+  font-size: 54px;
+  max-width: 900px;
+  margin: auto;
+  font-weight: 800;
+}
+
+.hero p {
+  font-size: 20px;
+  margin-top: 20px;
+  opacity: 0.8;
+}
+
+
+/* BUTTONS */
+.login-buttons {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+}
+
+.btn {
+  padding: 14px 32px;
+  border-radius: 40px;
+  font-weight: 600;
+  text-decoration: none;
+  color: white;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.learner-btn { 
+  background: #d09873;
+  transition: all 0.3s ease;
+}
+.admin-btn { 
+  background: #7f6dc2;
+  transition: all 0.3s ease;
+}
+.guardian-btn { 
+  background: #9f68bb;
+  transition: all 0.3s ease;
+}
+
+.btn:hover { 
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.learner-btn:hover {
+  background: #f4a261;
+  color: #2d1810;
+}
+
+.admin-btn:hover {
+  background: #9b7fd6;
+  color: #1a1625;
+}
+
+.guardian-btn:hover {
+  background: #c084d1;
+  color: #1f1420;
+}
+
+/* FEATURES */
+.features {
+  height: auto;
+  background: #141416;
+  padding: 120px 40px;
+  text-align: center;
+}
+
+.features h2 {
+  font-size: 34px;
+}
+
+.feature-grid {
+  margin-top: 50px;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.feature-card {
+  background: #faf7f6;
+  color: #2d2d2d;
+  width: 280px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+/* ABOUT */
+.about {
+  background: linear-gradient(-45deg, #ffe0c7, #ffd4f4, #e5d4ff, #c7e9ff, #ffcce5);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color: #1a1a1a;
+  padding: 120px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.about::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.about h2 {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #1a1a1a;
+  text-shadow: 0 2px 10px rgba(255,255,255,0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.about-text {
+  max-width: 850px;
+  margin: 20px auto 60px;
+  font-size: 20px;
+  line-height: 1.7;
+  color: rgba(26, 26, 26, 0.8);
+  text-shadow: 0 1px 3px rgba(255,255,255,0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.test-title {
+  font-size: 36px;
+  font-weight: 600;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  color: #1a1a1a;
+  text-shadow: 0 2px 8px rgba(255,255,255,0.3);
+  position: relative;
+  z-index: 1;
+}
+
+/* TESTIMONIALS */
+.testimonial-grid {
+  margin-top: 40px;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.testimonial-card {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(15px);
+  padding: 30px;
+  width: 300px;
+  border-radius: 20px;
+  color: #1a1a1a;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.testimonial-card p {
+  font-style: italic;
+  margin-bottom: 15px;
+  color: #1a1a1a;
+  text-shadow: 0 1px 3px rgba(255,255,255,0.2);
+}
+
+.testimonial-card span {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+  color: rgba(26, 26, 26, 0.7);
+  text-shadow: 0 1px 2px rgba(255,255,255,0.2);
+}
+
+/* CONTACT */
+.contact {
+  padding: 100px 40px;
+  background: #0c0c0d;
+  text-align: center;
+  color: #fff2dc;
+}
+
+.contact h2 {
+  font-size: 32px;
+}
+.contact p {
+  margin-top: 20px;
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+/* RESPONSIVE DESIGN */
+
+/* Large Desktop */
+@media (min-width: 1400px) {
+  .header-container {
+    padding: 12px 60px;
+  }
+  
+  .hero {
+    padding: 180px 60px 140px;
+  }
+  
+  .hero h1 {
+    font-size: 64px;
+  }
+}
+
+/* Desktop */
+@media (max-width: 1200px) {
+  .hero h1 {
+    font-size: 48px;
+  }
+  
+  .feature-grid,
+  .testimonial-grid {
+    gap: 20px;
+  }
+  
+  .feature-card,
+  .testimonial-card {
+    width: 260px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .header-container {
+    padding: 12px 20px;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .logo {
+    font-size: 24px;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-links a {
+    margin-left: 0;
+    font-size: 14px;
+  }
+  
+  .hero {
+    padding: 140px 20px 100px;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .hero-section {
+    padding: 100px 20px 80px;
+    margin-left: 0;
+    margin-right: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+  
+  .hero h1 {
+    font-size: 36px;
+    line-height: 1.2;
+  }
+  
+  .hero p {
+    font-size: 18px;
+  }
+  
+  .login-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .login-buttons .btn {
+    width: 200px;
+    text-align: center;
+  }
+  
+  .features,
+  .about,
+  .contact {
+    padding: 80px 20px;
+    width: 100%;
+  }
+  
+  .features h2,
+  .about h2,
+  .contact h2 {
+    font-size: 28px;
+  }
+  
+  .feature-grid,
+  .testimonial-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .feature-card,
+  .testimonial-card {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .header-container {
+    padding: 10px 15px;
+  }
+  
+  .logo {
+    font-size: 20px;
+  }
+  
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .nav-links a {
+    font-size: 13px;
+  }
+  
+  .hero {
+    padding: 120px 15px 80px;
+  }
+  
+  .hero-section {
+    padding: 90px 15px 70px;
+  }
+  
+  .hero h1 {
+    font-size: 28px;
+    line-height: 1.3;
+  }
+  
+  .hero p {
+    font-size: 16px;
+    margin-top: 15px;
+  }
+  
+  .login-buttons {
+    margin-top: 30px;
+  }
+  
+  .login-buttons .btn {
+    padding: 12px 24px;
+    font-size: 14px;
+    width: 180px;
+  }
+  
+  .features,
+  .about,
+  .contact {
+    padding: 60px 15px;
+  }
+  
+  .features h2,
+  .about h2,
+  .contact h2 {
+    font-size: 24px;
+  }
+  
+  .about-text {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  
+  .test-title {
+    font-size: 22px;
+  }
+  
+  .feature-card,
+  .testimonial-card {
+    padding: 25px 20px;
+    max-width: 100%;
+  }
+  
+  .contact p {
+    font-size: 16px;
+  }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 320px) {
+  .hero h1 {
+    font-size: 24px;
+  }
+  
+  .hero p {
+    font-size: 14px;
+  }
+  
+  .login-buttons .btn {
+    width: 160px;
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+  
+  .features h2,
+  .about h2,
+  .contact h2 {
+    font-size: 20px;
+  }
+  
+  .about-text {
+    font-size: 14px;
+  }
+}   
