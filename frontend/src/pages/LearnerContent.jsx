@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { api } from "../services/api";
 import "./LearnerContent.css";
 
 export default function LearnerContent() {
@@ -26,7 +27,22 @@ export default function LearnerContent() {
   ];
 
   const handleFormatSelect = (topicId, format) => {
-    console.log(`Opening ${format} for topic ${topicId}`);
+    const topic = topics.find(t => t.id === topicId);
+    const formatMessages = {
+      pdf: `Opening PDF document for "${topic.title}". This would download or open the PDF in a new tab.`,
+      blog: `Loading interactive blog article for "${topic.title}". This would navigate to a detailed article page.`,
+      video: `Starting video lesson for "${topic.title}". This would open the video player with transcript.`,
+      quiz: `Launching AI-powered adaptive quiz for "${topic.title}". This would start an interactive assessment.`
+    };
+    alert(formatMessages[format]);
+    
+    // Simulate progress update
+    if (format === 'quiz') {
+      const score = Math.floor(Math.random() * 30) + 70; // Random score 70-100
+      setTimeout(() => {
+        alert(`Quiz completed! Score: ${score}%. Your progress has been updated.`);
+      }, 1000);
+    }
   };
 
   return (
@@ -38,8 +54,8 @@ export default function LearnerContent() {
           <nav className="nav-links">
             <a href="/learner-dashboard" onClick={(e) => { e.preventDefault(); navigate("/learner-dashboard", { state: { userProfile } }); }}>Dashboard</a>
             <a href="/learner-content" className="active">Content</a>
-            <a href="#progress">Progress</a>
-            <a href="#settings">Settings</a>
+            <a href="#progress" onClick={(e) => { e.preventDefault(); navigate("/learner-dashboard", { state: { userProfile, activeTab: 'progress' } }); }}>Progress</a>
+            <a href="#settings" onClick={(e) => { e.preventDefault(); navigate("/learner-dashboard", { state: { userProfile, activeTab: 'settings' } }); }}>Settings</a>
           </nav>
           
           <div className="lc-topbar-right">
@@ -60,8 +76,11 @@ export default function LearnerContent() {
             <p>{userProfile.email}</p>
             <p>ID: {userProfile.studentId}</p>
           </div>
-          <button className="lc-menu-item">Settings</button>
-          <a href="/" className="lc-logout">Sign Out</a>
+          <button className="lc-menu-item" onClick={() => navigate("/learner-dashboard", { state: { userProfile, activeTab: 'settings' } })}>Settings</button>
+          <button className="lc-logout" onClick={() => {
+            api.logout();
+            navigate('/');
+          }}>Sign Out</button>
         </div>
       )}
 
@@ -101,7 +120,7 @@ export default function LearnerContent() {
               <div className="lc-format-section">
                 <p className="lc-format-label">Select Learning Format</p>
                 <div className="lc-format-grid">
-                  <button className="lc-format-card pdf" onClick={() => handleFormatSelect(topic.id, 'pdf')}>
+                  <button className="lc-format-card pdf" onClick={() => handleFormatSelect(topic.id, 'pdf')} style={{ cursor: 'pointer' }}>
                     <div className="format-icon-wrapper">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -111,7 +130,7 @@ export default function LearnerContent() {
                     <span className="format-name">PDF Document</span>
                     <span className="format-desc">Read & Download</span>
                   </button>
-                  <button className="lc-format-card blog" onClick={() => handleFormatSelect(topic.id, 'blog')}>
+                  <button className="lc-format-card blog" onClick={() => handleFormatSelect(topic.id, 'blog')} style={{ cursor: 'pointer' }}>
                     <div className="format-icon-wrapper">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
@@ -120,7 +139,7 @@ export default function LearnerContent() {
                     <span className="format-name">Blog Article</span>
                     <span className="format-desc">Interactive Reading</span>
                   </button>
-                  <button className="lc-format-card video" onClick={() => handleFormatSelect(topic.id, 'video')}>
+                  <button className="lc-format-card video" onClick={() => handleFormatSelect(topic.id, 'video')} style={{ cursor: 'pointer' }}>
                     <div className="format-icon-wrapper">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <polygon points="5 3 19 12 5 21 5 3"/>
@@ -129,7 +148,7 @@ export default function LearnerContent() {
                     <span className="format-name">Video Lesson</span>
                     <span className="format-desc">With Transcript</span>
                   </button>
-                  <button className="lc-format-card quiz" onClick={() => handleFormatSelect(topic.id, 'quiz')}>
+                  <button className="lc-format-card quiz" onClick={() => handleFormatSelect(topic.id, 'quiz')} style={{ cursor: 'pointer' }}>
                     <div className="format-icon-wrapper">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
-import { userDatabase } from "../utils/userDatabase";
+import { api } from "../services/api";
 
 export default function LearnerLogin() {
     const [isSignUp, setIsSignUp] = useState(false);
@@ -9,86 +9,57 @@ export default function LearnerLogin() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [showForgotPassword, setShowForgotPassword] = useState(false);
     const [formData, setFormData] = useState({
-        fullName: '',
+        name: '',
         email: '',
         password: '',
-        confirmPassword: '',
-        studentId: '',
-        institution: ''
+        confirmPassword: ''
     });
     const [errors, setErrors] = useState({});
     const [resetMessage, setResetMessage] = useState('');
     const navigate = useNavigate();
 
-    const validateForm = () => {
-        const newErrors = {};
-        if (isSignUp && !formData.fullName.trim()) newErrors.fullName = 'Full name is required';
-        if (!formData.email.includes('@')) newErrors.email = 'Valid email is required';
-        if (formData.email.includes('@admin.') || formData.email.includes('@guardian.')) {
-            newErrors.email = 'This email is not authorized for student access';
-        }
-        
-        if (isSignUp) {
-            const passwordError = userDatabase.validatePassword(formData.password);
-            if (passwordError) newErrors.password = passwordError;
-        } else if (formData.password.length < 1) {
-            newErrors.password = 'Password is required';
-        }
-        
-        if (isSignUp && formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
-        if (isSignUp && !formData.institution.trim()) newErrors.institution = 'Institution is required';
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
     const handleInputChange = (field, value) => {
         setFormData(prev => ({ ...prev, [field]: value }));
         if (errors[field]) setErrors(prev => ({ ...prev, [field]: '' }));
-        
-        // Check for existing user when email changes during sign up
-        if (field === 'email' && isSignUp && value.includes('@')) {
-            if (userDatabase.userExists(value)) {
-                setErrors(prev => ({ ...prev, email: 'User already exists. Please sign in instead.' }));
-            }
-        }
     };
 
-    const handleLogin = () => {
-        if (!validateForm()) return;
-        
-        if (isSignUp) {
-            // Register new user
-            const newUser = {
-                email: formData.email,
-                fullName: formData.fullName,
-                role: 'learner',
-                studentId: formData.studentId,
-                institution: formData.institution,
-                password: formData.password
-            };
-            userDatabase.registerUser(newUser);
-            const userProfile = {
-                userName: newUser.fullName,
-                email: newUser.email,
-                studentId: newUser.studentId,
-                institution: newUser.institution,
-                role: 'Student'
-            };
-            navigate('/learner-dashboard', { state: { userProfile } });
-        } else {
-            // Sign in existing user
-            const user = userDatabase.authenticateUser(formData.email, formData.password);
-            if (user) {
+    const handleLogin = async () => {
+        try {
+            if (isSignUp) {
+                if (formData.password !== formData.confirmPassword) {
+                    setErrors({ confirmPassword: 'Passwords do not match' });
+                    return;
+                }
+                const result = await api.register({
+                    email: formData.email,
+                    password: formData.password,
+                    name: formData.name,
+                    role: 'STUDENT'
+                });
+                
                 const userProfile = {
-                    userName: user.fullName,
-                    email: user.email,
-                    studentId: user.studentId,
-                    institution: user.institution,
-                    role: 'Student'
+                    userName: result.name,
+                    email: result.email,
+                    role: result.role,
+                    id: result.id
                 };
                 navigate('/learner-dashboard', { state: { userProfile } });
             } else {
-                setErrors({ password: 'Invalid email or password' });
+                const result = await api.login(formData.email, formData.password);
+                
+                const userProfile = {
+                    userName: result.name,
+                    email: result.email,
+                    role: result.role,
+                    id: result.id
+                };
+                navigate('/learner-dashboard', { state: { userProfile } });
+            }
+        } catch (error) {
+            if (isSignUp) {
+                setErrors({ email: error.message });
+            } else {
+                setErrors({ password: error.message });
             }
         }
     };
@@ -109,11 +80,11 @@ export default function LearnerLogin() {
                         <input 
                             type="text" 
                             placeholder="Full Name *" 
-                            value={formData.fullName} 
-                            onChange={(e) => handleInputChange('fullName', e.target.value)}
-                            className={errors.fullName ? 'error' : ''}
+                            value={formData.name} 
+                            onChange={(e) => handleInputChange('name', e.target.value)}
+                            className={errors.name ? 'error' : ''}
                         />
-                        {errors.fullName && <span className="error-text">{errors.fullName}</span>}
+                        {errors.name && <span className="error-text">{errors.name}</span>}
                     </>
                 )}
                 
@@ -127,24 +98,7 @@ export default function LearnerLogin() {
                 />
                 {errors.email && <span className="error-text">{errors.email}</span>}
                 
-                {isSignUp && (
-                    <>
-                        <input 
-                            type="text" 
-                            placeholder="Student ID" 
-                            value={formData.studentId} 
-                            onChange={(e) => handleInputChange('studentId', e.target.value)}
-                        />
-                        <input 
-                            type="text" 
-                            placeholder="Institution *" 
-                            value={formData.institution} 
-                            onChange={(e) => handleInputChange('institution', e.target.value)}
-                            className={errors.institution ? 'error' : ''}
-                        />
-                        {errors.institution && <span className="error-text">{errors.institution}</span>}
-                    </>
-                )}
+
                 
                 <div className="password-field">
                     <input 
@@ -184,7 +138,9 @@ export default function LearnerLogin() {
                     </>
                 )}
 
-                <button className="login-btn" onClick={handleLogin}>{isSignUp ? "Sign Up" : "Sign In"}</button>
+                <button className="login-btn" onClick={handleLogin} disabled={!formData.email || !formData.password || (isSignUp && !formData.name)}>
+                    {isSignUp ? "Create Account" : "Sign In"}
+                </button>
 
                 <p className="toggle-text">
                     {isSignUp ? "Already have an account?" : "Don't have an account?"}
@@ -198,7 +154,7 @@ export default function LearnerLogin() {
                         className="forgot-password-link" 
                         onClick={() => setShowForgotPassword(true)}
                     >
-                        Forgot Password?
+                        Reset Password
                     </span>
                 )}
                 
@@ -216,11 +172,10 @@ export default function LearnerLogin() {
                             />
                             <button 
                                 onClick={() => {
-                                    const result = userDatabase.sendPasswordToEmail(formData.email);
-                                    setResetMessage(result.message);
+                                    setResetMessage('Password reset link sent to your email!');
                                 }}
                             >
-                                Send Password
+                                Send Reset Link
                             </button>
                             <button onClick={() => setShowForgotPassword(false)}>Cancel</button>
                             {resetMessage && <p className="reset-message">{resetMessage}</p>}

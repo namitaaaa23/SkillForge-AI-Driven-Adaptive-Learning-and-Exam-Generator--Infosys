@@ -36,7 +36,11 @@ export const userDatabase = {
   },
 
   registerUser(userData) {
-    this.users[userData.email.toLowerCase()] = userData;
+    const email = userData.email.toLowerCase();
+    if (this.userExists(email)) {
+      return { error: 'This email is already registered with another role' };
+    }
+    this.users[email] = userData;
     this.saveToStorage();
     return userData;
   },

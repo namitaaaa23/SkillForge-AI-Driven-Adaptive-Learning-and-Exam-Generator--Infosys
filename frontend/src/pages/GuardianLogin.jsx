@@ -1,106 +1,91 @@
 import { useState } from "react";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
-import { userDatabase } from "../utils/userDatabase";
+import { api } from "../services/api";
 
 export default function GuardianLogin() {
     const [isSignUp, setIsSignUp] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [formData, setFormData] = useState({
-        fullName: '',
+        name: '',
         email: '',
-        password: ''
+        password: '',
+        confirmPassword: ''
     });
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
-    const validateForm = () => {
-        const newErrors = {};
-        if (!formData.email || !formData.password) {
-            newErrors.general = 'Please fill in all fields';
-        }
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
     const handleInputChange = (field, value) => {
         setFormData(prev => ({ ...prev, [field]: value }));
         if (errors[field]) setErrors(prev => ({ ...prev, [field]: '' }));
-        
-        // Check for existing user when email changes during sign up
-        if (field === 'email' && isSignUp && value.includes('@')) {
-            if (userDatabase.userExists(value)) {
-                setErrors(prev => ({ ...prev, email: 'User already exists. Please sign in instead.' }));
-            }
-        }
     };
 
-    const handleLogin = () => {
-        if (!validateForm()) return;
-        
-        if (isSignUp) {
-            if (!formData.fullName) {
-                setErrors({ general: 'Please enter your full name' });
-                return;
-            }
-            // Register new user
-            const newUser = {
-                email: formData.email,
-                fullName: formData.fullName,
-                role: 'guardian',
-                guardianId: 'GRD' + Date.now().toString().slice(-3),
-                relationship: 'Parent',
-                password: formData.password
-            };
-            userDatabase.registerUser(newUser);
-            const userProfile = {
-                userName: newUser.fullName,
-                email: newUser.email,
-                guardianId: newUser.guardianId,
-                relationship: newUser.relationship
-            };
-            navigate('/guardian-dashboard', { state: { userProfile } });
-        } else {
-            // Sign in existing user
-            const user = userDatabase.authenticateUser(formData.email, formData.password);
-            if (user && user.role === 'guardian') {
-                const userProfile = {
-                    userName: user.fullName,
-                    email: user.email,
-                    guardianId: user.guardianId,
-                    relationship: user.relationship || 'Parent'
-                };
-                navigate('/guardian-dashboard', { state: { userProfile } });
-            } else if (user) {
-                setErrors({ password: 'This account is not a guardian account' });
+    const handleLogin = async () => {
+        try {
+            if (isSignUp) {
+                if (formData.password !== formData.confirmPassword) {
+                    setErrors({ confirmPassword: 'Passwords do not match' });
+                    return;
+                }
+                const result = await api.register({
+                    email: formData.email,
+                    password: formData.password,
+                    name: formData.name,
+                    role: 'GUARDIAN'
+                });
+                
+                navigate('/guardian-dashboard', { 
+                    state: { userProfile: { userName: result.name, email: result.email, role: result.role } } 
+                });
             } else {
-                setErrors({ password: 'Invalid email or password' });
+                const result = await api.login(formData.email, formData.password);
+                
+                // Only allow guardians to access guardian dashboard
+                if (result.role !== 'GUARDIAN') {
+                    setErrors({ password: 'Access denied. Guardian credentials required.' });
+                    return;
+                }
+                
+                navigate('/guardian-dashboard', { 
+                    state: { userProfile: { userName: result.name, email: result.email, role: result.role } } 
+                });
             }
-        }
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            handleLogin();
+        } catch (error) {
+            if (isSignUp) {
+                setErrors({ email: error.message });
+            } else {
+                setErrors({ password: error.message });
+            }
         }
     };
 
     return (
         <div className="login-wrapper">
-            <div className="login-card" onKeyPress={handleKeyPress}>
+            <div className="login-card">
                 <h2 className="login-title">Guardian</h2>
 
-                {isSignUp && <input type="text" placeholder="Full Name" value={formData.fullName} onChange={(e) => handleInputChange('fullName', e.target.value)} />}
-                <input type="email" placeholder="Guardian Email" value={formData.email} onChange={(e) => handleInputChange('email', e.target.value)} onKeyPress={handleKeyPress} className={errors.email ? 'error' : ''} />
+                {isSignUp && (
+                    <input 
+                        type="text" 
+                        placeholder="Full Name *" 
+                        value={formData.name} 
+                        onChange={(e) => handleInputChange('name', e.target.value)}
+                    />
+                )}
+                
+                <input 
+                    type="email" 
+                    placeholder="Guardian Email Address *" 
+                    value={formData.email} 
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                />
                 {errors.email && <span className="error-text">{errors.email}</span>}
-                {errors.general && <span className="error-text">{errors.general}</span>}
-                {errors.password && <span className="error-text">{errors.password}</span>}
                 
                 <div className="password-field">
                     <input 
                         type={showPassword ? "text" : "password"} 
-                        placeholder="Password" 
+                        placeholder="Password *" 
                         value={formData.password}
                         onChange={(e) => handleInputChange('password', e.target.value)}
                     />
@@ -111,23 +96,31 @@ export default function GuardianLogin() {
                         {showPassword ? "Hide" : "Show"}
                     </span>
                 </div>
-                
+                {errors.password && <span className="error-text">{errors.password}</span>}
+
                 {isSignUp && (
-                    <div className="password-field">
-                        <input 
-                            type={showConfirmPassword ? "text" : "password"} 
-                            placeholder="Confirm Password" 
-                        />
-                        <span 
-                            className="password-toggle" 
-                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        >
-                            {showConfirmPassword ? "Hide" : "Show"}
-                        </span>
-                    </div>
+                    <>
+                        <div className="password-field">
+                            <input 
+                                type={showConfirmPassword ? "text" : "password"} 
+                                placeholder="Confirm Password *" 
+                                value={formData.confirmPassword}
+                                onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                            />
+                            <span 
+                                className="password-toggle" 
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            >
+                                {showConfirmPassword ? "Hide" : "Show"}
+                            </span>
+                        </div>
+                        {errors.confirmPassword && <span className="error-text">{errors.confirmPassword}</span>}
+                    </>
                 )}
 
-                <button className="login-btn" onClick={handleLogin}>{isSignUp ? "Sign Up" : "Sign In"}</button>
+                <button className="login-btn" onClick={handleLogin} disabled={!formData.email || !formData.password || (isSignUp && !formData.name)}>
+                    {isSignUp ? "Create Guardian Account" : "Guardian Access"}
+                </button>
 
                 <p className="toggle-text">
                     {isSignUp ? "Already have an account?" : "Don't have an account?"}
@@ -135,7 +128,7 @@ export default function GuardianLogin() {
                         {isSignUp ? " Sign In" : " Sign Up"}
                     </span>
                 </p>
-
+                
                 <Link to="/" className="back-link">← Back to Home</Link>
             </div>
         </div>

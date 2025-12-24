@@ -8,6 +8,7 @@ import LearnerDashboard from "./pages/LearnerDashboard";
 import LearnerContent from "./pages/LearnerContent";
 import AdminDashboard from "./pages/AdminDashboard";
 import GuardianDashboard from "./pages/GuardianDashboard";
+import AuthGuard from "./components/AuthGuard";
 
 export default function App() {
   return (
@@ -21,10 +22,26 @@ export default function App() {
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/guardian-login" element={<GuardianLogin />} />
 
-        <Route path="/learner-dashboard" element={<LearnerDashboard />} />
-        <Route path="/learner-content" element={<LearnerContent />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        <Route path="/guardian-dashboard" element={<GuardianDashboard />} />
+        <Route path="/learner-dashboard" element={
+          <AuthGuard redirectTo="/learner-login">
+            <LearnerDashboard />
+          </AuthGuard>
+        } />
+        <Route path="/learner-content" element={
+          <AuthGuard redirectTo="/learner-login">
+            <LearnerContent />
+          </AuthGuard>
+        } />
+        <Route path="/admin-dashboard" element={
+          <AuthGuard redirectTo="/admin-login">
+            <AdminDashboard />
+          </AuthGuard>
+        } />
+        <Route path="/guardian-dashboard" element={
+          <AuthGuard redirectTo="/guardian-login">
+            <GuardianDashboard />
+          </AuthGuard>
+        } />
 
       </Routes>
     </BrowserRouter>
