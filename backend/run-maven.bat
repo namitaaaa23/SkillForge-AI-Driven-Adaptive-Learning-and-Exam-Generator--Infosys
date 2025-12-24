@@ -1,0 +1,3 @@
+@echo off
+echo Starting SkillForge Backend with Maven...
+mvn spring-boot:run
