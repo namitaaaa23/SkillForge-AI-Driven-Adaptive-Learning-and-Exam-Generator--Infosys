@@ -17,3 +17,12 @@ build/
 # Ignore temporary files
 .DS_Store
 *.tmp
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Backend
+backend/target/
+
+# Env
+.env
