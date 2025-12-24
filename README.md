@@ -1,72 +1,64 @@
-SkillForge AI – Driven Adaptive Learning and Exam Generator
-About the Project
+# SkillForge AI — Adaptive Learning & Exam Generator
 
-SkillForge AI is an AI-driven adaptive learning platform designed to deliver personalized learning experiences through intelligent content delivery, automated assessment generation, and real-time academic analytics. The platform supports three distinct user roles—Learner, Admin, and Guardian—each with dedicated dashboards and role-specific functionalities. SkillForge AI aims to enhance learning efficiency, transparency, and engagement by combining modern frontend design with secure backend services and future AI integration.
+## Overview
 
-Project Objectives
+SkillForge AI is a role-based, AI-ready adaptive learning platform that personalizes education through intelligent content delivery, automated assessments, and real-time performance analytics. The system supports **Learners**, **Admins**, and **Guardians**, each with secure, dedicated dashboards.
 
-To design an adaptive learning ecosystem with role-based dashboards
+## Key Capabilities
 
-To deliver personalized learning content in multiple formats
+* Adaptive, learner-centric dashboards
+* Secure role-based authentication (JWT)
+* Assessment-ready backend APIs
+* Guardian monitoring and transparency
+* Modular, scalable full‑stack architecture
 
-To generate AI-powered assessments with instant evaluation
+## System Roles
 
-To enable guardians to monitor learner performance transparently
+| Role     | Responsibilities                                             |
+| -------- | ------------------------------------------------------------ |
+| Learner  | Adaptive content consumption, assessments, progress tracking |
+| Admin    | User, content, assessment, and analytics management          |
+| Guardian | Ward monitoring, alerts, admin communication                 |
 
-To build a scalable, modular full-stack architecture
+## Technology Stack
 
-To prepare the platform for AI-driven exam generation and analytics
+| Layer           | Technology                        |
+| --------------- | --------------------------------- |
+| Frontend        | React (Vite), HTML5, CSS3         |
+| Backend         | Java Spring Boot (REST, JWT)      |
+| Database        | MongoDB *(planned)*               |
+| AI              | LLM‑based assessments *(planned)* |
+| Version Control | Git, GitHub                       |
 
-System Roles
+## Milestone Progress
 
-Learner: Consumes adaptive content, takes assessments, tracks progress
+| Milestone   | Description                           | Status      |
+| ----------- | ------------------------------------- | ----------- |
+| Milestone 1 | Architecture, workflows, wireframes   | ✅ Completed |
+| Milestone 2 | Frontend, backend APIs, integration   | ✅ Completed |
+| Milestone 3 | Database design & integration         | ⏳ Pending   |
+| Milestone 4 | AI integration for exams & adaptivity | ⏳ Pending   |
 
-Admin: Manages users, content, assessments, and analytics
+## Repository Structure
 
-Guardian: Monitors ward performance and communicates with admins
+```
+.
+├── frontend/
+├── backend/
+├── Documents/
+└── README.md
+```
 
-Milestone Progress Tracker
-Milestone	Description	Status
-Milestone 1	Architecture design, system workflow, wireframes, UI/UX planning	✅ Completed
-Milestone 2	Frontend development, backend API creation, API testing, frontend-backend integration	✅ Completed
-Milestone 3	Database design and integration (MongoDB)	⏳ Pending
-Milestone 4	AI integration for adaptive learning and exam generation	⏳ Pending
-Technology Stack
+## Current Status
 
-Frontend: React (Vite), HTML5, CSS3
+Frontend UI and secure backend APIs are integrated and validated. The system is ready for database persistence and AI enablement.
 
-Backend: Java Spring Boot (REST APIs, JWT Security)
+## Roadmap
 
-Database: MongoDB (planned)
+* MongoDB integration
+* AI-powered exam generation
+* Advanced analytics & notifications
 
-AI Layer: Custom LLM-based assessment generation (planned)
-
-Version Control: Git & GitHub
-
-Repository Structure
-SkillForge-AI/
- ├── frontend/
- ├── backend/
- ├── Documents/
- └── README.md
-
-Current Status
-
-The project has successfully completed frontend implementation and backend API integration. The application currently operates as a secure, role-aware UI prototype with validated APIs. Database connectivity and AI-driven exam generation are planned for upcoming milestones.
-
-Future Enhancements
-
-Database persistence and optimization
-
-AI-based adaptive learning engine
-
-AI-powered exam and quiz generation
-
-Advanced analytics dashboards
-
-Notification and alert system
-
-Author
+## Author
 
 Namita Sinha
-SkillForge AI – Adaptive Learning Platform
