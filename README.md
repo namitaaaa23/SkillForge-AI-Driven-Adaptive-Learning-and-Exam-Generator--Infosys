@@ -1,49 +1,72 @@
-# SkillForge - AI-Driven Learning Platform
+SkillForge AI – Driven Adaptive Learning and Exam Generator
+About the Project
 
-## Quick Start
+SkillForge AI is an AI-driven adaptive learning platform designed to deliver personalized learning experiences through intelligent content delivery, automated assessment generation, and real-time academic analytics. The platform supports three distinct user roles—Learner, Admin, and Guardian—each with dedicated dashboards and role-specific functionalities. SkillForge AI aims to enhance learning efficiency, transparency, and engagement by combining modern frontend design with secure backend services and future AI integration.
 
-### Option 1: Automatic Start
-```bash
-# Double-click START.bat or run:
-START.bat
-```
+Project Objectives
 
-### Option 2: Manual Start
+To design an adaptive learning ecosystem with role-based dashboards
 
-**Backend:**
-```bash
-cd backend
-set JAVA_HOME=C:\Program Files\Java\jdk-17
-.\mvnw.cmd spring-boot:run
-```
+To deliver personalized learning content in multiple formats
 
-**Frontend:**
-```bash
-cd frontend
-npm install
-npm run dev
-```
+To generate AI-powered assessments with instant evaluation
 
-## Access Application
-- **Frontend:** http://localhost:5173
-- **Backend API:** http://localhost:8080
+To enable guardians to monitor learner performance transparently
 
-## Features
-- ✅ JWT Authentication
-- ✅ User Management (Student, Teacher, Admin)
-- ✅ Course Management
-- ✅ Interactive Dashboards
-- ✅ Learning Content (PDF, Video, Quiz, Blog)
-- ✅ Progress Tracking
-- ✅ AI Assistant
+To build a scalable, modular full-stack architecture
 
-## Test Users
-Register any user or use these test credentials:
-- **Student:** student@test.com / password123
-- **Admin:** admin@test.com / password123
-- **Teacher:** teacher@test.com / password123
+To prepare the platform for AI-driven exam generation and analytics
 
-## Tech Stack
-- **Backend:** Spring Boot, JWT, H2 Database
-- **Frontend:** React, Vite
-- **Authentication:** JWT Tokens
+System Roles
+
+Learner: Consumes adaptive content, takes assessments, tracks progress
+
+Admin: Manages users, content, assessments, and analytics
+
+Guardian: Monitors ward performance and communicates with admins
+
+Milestone Progress Tracker
+Milestone	Description	Status
+Milestone 1	Architecture design, system workflow, wireframes, UI/UX planning	✅ Completed
+Milestone 2	Frontend development, backend API creation, API testing, frontend-backend integration	✅ Completed
+Milestone 3	Database design and integration (MongoDB)	⏳ Pending
+Milestone 4	AI integration for adaptive learning and exam generation	⏳ Pending
+Technology Stack
+
+Frontend: React (Vite), HTML5, CSS3
+
+Backend: Java Spring Boot (REST APIs, JWT Security)
+
+Database: MongoDB (planned)
+
+AI Layer: Custom LLM-based assessment generation (planned)
+
+Version Control: Git & GitHub
+
+Repository Structure
+SkillForge-AI/
+ ├── frontend/
+ ├── backend/
+ ├── Documents/
+ └── README.md
+
+Current Status
+
+The project has successfully completed frontend implementation and backend API integration. The application currently operates as a secure, role-aware UI prototype with validated APIs. Database connectivity and AI-driven exam generation are planned for upcoming milestones.
+
+Future Enhancements
+
+Database persistence and optimization
+
+AI-based adaptive learning engine
+
+AI-powered exam and quiz generation
+
+Advanced analytics dashboards
+
+Notification and alert system
+
+Author
+
+Namita Sinha
+SkillForge AI – Adaptive Learning Platform
